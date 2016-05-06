@@ -54,6 +54,8 @@ from display import *
 from matrix import *
 from draw import *
 
+num_frames = ''
+basename = ''
 
 """======== first_pass( commands, symbols ) ==========
 
@@ -73,7 +75,21 @@ from draw import *
   jdyrlandweaver
   ==================== """
 def first_pass( commands ):
-        
+    vary = False
+
+    for cmd in commands:
+        if cmd[0] == 'frames':
+            num_frames = commands[1]
+        elif cmd[0] == 'basename':
+            basename = cmd[1]
+        elif cmd[0] == 'vary':
+            vary = True
+
+    if basename == '':
+        print 'You did not provide a basename. base will be used'
+        basename = 'base'        
+
+    return vary and num_frames == '':
 
 """======== second_pass( commands ) ==========
 
@@ -93,7 +109,18 @@ def first_pass( commands ):
   appropirate value. 
   ===================="""
 def second_pass( commands, num_frames ):
+    knobs = []
+    for f in xrange(num_frames):
+        knobs.append({})
 
+    for cmd in commands:
+        if cmd[0] == 'vary':
+            if f < cmd[1]:
+                knobs[cmd[1]] = cmd[4]
+            elif f > cmd[2]:
+                knobs[cmd[1]] = cmd[5]
+            else:
+                knobs[cmd[1]] = (cmd[5]-cmd[4])*(f-cmd[2])/(cmd[3]-cmd[2])+cmd[4]
 
 def run(filename):
     """
@@ -112,8 +139,11 @@ def run(filename):
         return
         
     stack = [ tmp ]
-    screen = new_screen()    
-        
+    screen = new_screen()
+
+    if not first_pass(commands):
+        second_pass(commands, num_frames)
+    
     for command in commands:
         if command[0] == "pop":
             stack.pop()
