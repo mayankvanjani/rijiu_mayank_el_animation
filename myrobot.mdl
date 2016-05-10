@@ -16,8 +16,8 @@ push
 rotate y 360 spinny
 vary spinny 0 49 0 1
 box -60 25 50 120 50 100 
-sphere -25 0 0 10
-sphere 25 0 0 10
+sphere -25 0 25 10
+sphere 25 0 25 10
 pop
 pop
 pop
@@ -27,7 +27,11 @@ box 0 0 0 50 120 50
 push
 move 0 -101 0
 rotate y -30
-torus 0 0 25 150
+push
+rotate y 360 spinny
+vary spinny 0 49 0 1
+torus 0 0 0 25 150
+pop
 pop
 pop
 move -175 25 0
@@ -37,9 +41,11 @@ move -15 -37 0
 rotate x 180
 box 0 0 100 50 50 200
 pop
+pop
 push
 move 350 0 0
 box -50 25 25 100 50 50
+pop
 push
 move 65 0 0
 rotate x 180
