@@ -120,17 +120,17 @@ def second_pass( commands, num_frames ):
             if cmd[1] not in names:
                 names.append(cmd[1])
                 for x in xrange(0, cmd[2]):
-                    knobs[f][cmd[1]] = cmd[4]
+                    knobs[x][cmd[1]] = cmd[4]
 
             for f in xrange(cmd[2], cmd[3]):
                 knobs[f][cmd[1]] = (cmd[5]-cmd[4])*(f-cmd[2])/float((cmd[3]-cmd[2]))+cmd[4]
 
     for i in xrange(len(knobs)):
-        empty = [x for x in knobs[i].keys() if x not in names]
+        empty = [x for x in names if x not in knobs[i].keys()]
         if len(empty) > 0:
             for x in empty:
                 knobs[i][x] = knobs[i-1][x]
-
+                
     return knobs
 
 def run(filename):
