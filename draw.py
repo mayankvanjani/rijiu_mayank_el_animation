@@ -36,7 +36,7 @@ def draw_polygons( points, screen, color ):
             if tri[1][1] != tri[0][1]:
                 MB = (tri[1][0]-tri[0][0])/(tri[1][1]-tri[0][1])
 
-            if tri[0][0] != tri[1][0]:
+            if tri[0][1] != tri[1][1]:
                 x0 = tri[0][0]
                 x1 = tri[0][0]
             else:
