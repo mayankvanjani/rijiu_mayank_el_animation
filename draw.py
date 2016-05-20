@@ -2,6 +2,7 @@ from display import *
 from matrix import *
 from gmath import calculate_dot
 from math import cos, sin, pi
+import random
 
 MAX_STEPS = 100
 
@@ -28,6 +29,7 @@ def draw_polygons( points, screen, color ):
                        points[p][0], points[p][1], color )
 
             tri = sorted([points[p], points[p+1], points[p+2]], key = lambda p:p[1])
+
             TB = (tri[2][0]-tri[0][0])/(tri[2][1]-tri[0][1])
             if tri[2][1] != tri[1][1]:
                 TM = (tri[2][0]-tri[1][0])/(tri[2][1]-tri[1][1])
@@ -39,15 +41,17 @@ def draw_polygons( points, screen, color ):
                 x1 = tri[0][0]
             else:
                 x0 = tri[0][0]
-                x1 = tri[0][1]
-                
+                x1 = tri[1][0]
+
+            c = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
+
             for y in xrange(int(tri[0][1]), int(tri[2][1])):
-                if (y >= tri[1][1] and tri[0][1] != tri[1][1]) or (tri[2][1] == tri[1][1]):
-                    x0 += MB
+                if (y >= tri[1][1] and tri[0][1] != tri[1][1]) or (tri[0][1] == tri[1][1]):
+                    x1 += TM
                 else:
-                    x0 += TM
-                x1 += TB
-                draw_line(screen, x0, y, x1, y, color)
+                    x1 += MB
+                x0 += TB
+                draw_line(screen, x0, y, x1, y, c)
         p += 3
 
 
