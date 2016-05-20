@@ -26,7 +26,29 @@ def draw_polygons( points, screen, color ):
                        points[p+2][0], points[p+2][1], color )
             draw_line( screen, points[p+2][0], points[p+2][1],
                        points[p][0], points[p][1], color )
-        p+= 3
+
+            tri = sorted([points[p], points[p+1], points[p+2]], key = lambda p:p[1])
+            TB = (tri[2][0]-tri[0][0])/(tri[2][1]-tri[0][1])
+            if tri[2][1] != tri[1][1]:
+                TM = (tri[2][0]-tri[1][0])/(tri[2][1]-tri[1][1])
+            if tri[1][1] != tri[0][1]:
+                MB = (tri[1][0]-tri[0][0])/(tri[1][1]-tri[0][1])
+
+            if tri[0][0] != tri[1][0]:
+                x0 = tri[0][0]
+                x1 = tri[0][0]
+            else:
+                x0 = tri[0][0]
+                x1 = tri[0][1]
+                
+            for y in xrange(int(tri[0][1]), int(tri[2][1])):
+                if (y >= tri[1][1] and tri[0][1] != tri[1][1]) or (tri[2][1] == tri[1][1]):
+                    x0 += MB
+                else:
+                    x0 += TM
+                x1 += TB
+                draw_line(screen, x0, y, x1, y, color)
+        p += 3
 
 
 
