@@ -27,34 +27,34 @@ def draw_polygons( points, screen, color ):
                        points[p+2][0], points[p+2][1], color )
             draw_line( screen, points[p+2][0], points[p+2][1],
                        points[p][0], points[p][1], color )
-
-            tri = sorted([points[p], points[p+1], points[p+2]], key = lambda p:p[1])
-
-            TB = (tri[2][0]-tri[0][0])/(tri[2][1]-tri[0][1])
-            if tri[2][1] != tri[1][1]:
-                TM = (tri[2][0]-tri[1][0])/(tri[2][1]-tri[1][1])
-            if tri[1][1] != tri[0][1]:
-                MB = (tri[1][0]-tri[0][0])/(tri[1][1]-tri[0][1])
-
-            if tri[0][1] != tri[1][1]:
-                x0 = tri[0][0]
-                x1 = tri[0][0]
-            else:
-                x0 = tri[0][0]
-                x1 = tri[1][0]
-
-            c = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
-
-            for y in xrange(int(tri[0][1]), int(tri[2][1])):
-                if (y >= tri[1][1] and tri[0][1] != tri[1][1]) or (tri[0][1] == tri[1][1]):
-                    x1 += TM
-                else:
-                    x1 += MB
-                x0 += TB
-                draw_line(screen, x0, y, x1, y, c)
+            
+            scanline_convert( points[p], points[p+1], points[p+2], screen, [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)])
+            
         p += 3
 
+def scanline_convert(p0, p1, p2, screen, color):
+    tri = sorted([p0, p1, p2], key = lambda p:p[1])
+    
+    TB = (tri[2][0]-tri[0][0])/(tri[2][1]-tri[0][1])
+    if tri[2][1] != tri[1][1]:
+        TM = (tri[2][0]-tri[1][0])/(tri[2][1]-tri[1][1])
+    if tri[1][1] != tri[0][1]:
+        MB = (tri[1][0]-tri[0][0])/(tri[1][1]-tri[0][1])
 
+    if tri[0][1] != tri[1][1]:
+        x0 = tri[0][0]
+        x1 = tri[0][0]
+    else:
+        x0 = tri[0][0]
+        x1 = tri[1][0]
+
+    for y in xrange(int(tri[0][1]), int(tri[2][1])):
+        if (y >= tri[1][1] and tri[0][1] != tri[1][1]) or (tri[0][1] == tri[1][1]):
+            x1 += TM
+        else:
+            x1 += MB
+        x0 += TB
+        draw_line(screen, x0, y, x1, y, color)
 
 def add_box( points, x, y, z, width, height, depth ):
     x1 = x + width
@@ -315,7 +315,6 @@ def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
 def add_point( matrix, x, y, z=0 ):
     matrix.append( [x, y, z, 1] )
 
-
 def draw_line( screen, x0, y0, x1, y1, color ):
     dx = x1 - x0
     dy = y1 - y0
@@ -383,4 +382,3 @@ def draw_line( screen, x0, y0, x1, y1, color ):
                 d = d - dy
             y = y + 1
             d = d + dx
-
