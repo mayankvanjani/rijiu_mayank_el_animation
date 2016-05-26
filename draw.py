@@ -11,7 +11,7 @@ def add_polygon( points, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point( points, x1, y1, z1 )
     add_point( points, x2, y2, z2 )
     
-def draw_polygons( points, screen, color ):
+def draw_polygons( points, screen, color, z_buffer ):
 
     if len(points) < 3:
         print 'Need at least 3 points to draw a polygon!'
@@ -21,12 +21,12 @@ def draw_polygons( points, screen, color ):
     while p < len( points ) - 2:
 
         if calculate_dot( points, p ) < 0:
-            draw_line( screen, points[p][0], points[p][1], points[p][2]
-                       points[p+1][0], points[p+1][1], points[p][2] color, z_buffer )
-            draw_line( screen, points[p+1][0], points[p+1][1],
-                       points[p+2][0], points[p+2][1], color )
-            draw_line( screen, points[p+2][0], points[p+2][1],
-                       points[p][0], points[p][1], color )
+            draw_line( screen, points[p][0], points[p][1], points[p][2],
+                       points[p+1][0], points[p+1][1], points[p][2], color, z_buffer )
+            draw_line( screen, points[p+1][0], points[p+1][1], points[p+1][2],
+                       points[p+2][0], points[p+2][1], points[p+2][2], color, z_buffer)
+            draw_line( screen, points[p+2][0], points[p+2][1], points[p+2][2],
+                       points[p][0], points[p][1], points[p][2], color, z_buffer)
             
             scanline_convert( points[p], points[p+1], points[p+2], screen, [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)])
             
@@ -304,7 +304,7 @@ def draw_lines( matrix, screen, color , z_buffer):
         
     p = 0
     while p < len( matrix ) - 1:
-        draw_line( screen, matrix[p][0], matrix[p][1], matrix[p][2]
+        draw_line( screen, matrix[p][0], matrix[p][1], matrix[p][2],
                    matrix[p+1][0], matrix[p+1][1], matrix[p][2], color , z_buffer)
         p+= 2
 

@@ -20,7 +20,7 @@ def new_screen( width = XRES, height = YRES ):
             screen[y].append( DEFAULT_COLOR[:] )
     return screen
 
-def plot( screen, color, x, y z, z_buffer):
+def plot( screen, color, x, y, z, z_buffer):
     x = int(x)
     y = int(y)
     newy = YRES - 1 - y
