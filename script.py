@@ -141,6 +141,11 @@ def run(filename):
     tmp = new_matrix()
     ident( tmp )
 
+    z_buffer = new_matrix(XRES, YRES)
+    for x in xrange(XRES):
+        for y in xrange(YRES):
+            z_buffer[x][y] = -float('inf')
+    
     p = mdl.parseFile(filename)
 
     if p:
@@ -181,19 +186,19 @@ def run(filename):
                 m = []
                 add_sphere(m, command[1], command[2], command[3], command[4], 5)
                 matrix_mult(stack[-1], m)
-                draw_polygons( m, screen, color )
+                draw_polygons( m, screen, color, z_buffer)
     
             elif command[0] == "torus":
                 m = []
                 add_torus(m, command[1], command[2], command[3], command[4], command[5], 5)
                 matrix_mult(stack[-1], m)
-                draw_polygons( m, screen, color )
+                draw_polygons( m, screen, color, z_buffer)
     
             elif command[0] == "box":                
                 m = []
                 add_box(m, *command[1:])
                 matrix_mult(stack[-1], m)
-                draw_polygons( m, screen, color )
+                draw_polygons( m, screen, color, z_buffer)
     
             elif command[0] == "line":
                 m = []
